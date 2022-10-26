@@ -5,6 +5,7 @@ require('express-async-errors')
 // app setup
 const express = require('express')
 const app = express()
+const authRouter = require('./Auth/routes')
 
 // extra security packages
 const cors = require('cors')
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 })
 
 // routes
+app.use('/api/v1/auth', authRouter)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)
