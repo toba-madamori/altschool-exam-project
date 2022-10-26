@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes')
-const User = require('./models')
+const User = require('./model')
 const { UnauthenticatedError } = require('../Errors')
 const { signAccessToken } = require('../Utils/tokens')
 
