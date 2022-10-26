@@ -1,0 +1,53 @@
+{
+  "name": "exam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "forceExit": true,
+    "clearMocks": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toba-madamori/altschool-exam-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toba-madamori/altschool-exam-project/issues"
+  },
+  "homepage": "https://github.com/toba-madamori/altschool-exam-project#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "express-joi-validation": "^5.0.1",
+    "helmet": "^6.0.0",
+    "http-status-codes": "^2.2.0",
+    "joi": "^17.6.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.0",
+    "winston": "^3.8.2",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "jest": "^29.2.2",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.1"
+  }
+}
