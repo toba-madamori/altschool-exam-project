@@ -4,6 +4,7 @@ const app = require('../../app')
 const mongoose = require('mongoose')
 const { MongoMemoryServer } = require('mongodb-memory-server')
 const User = require('../../Auth/model')
+const Blog = require('../../Blogs/model')
 const { signAccessToken } = require('../../Utils/tokens')
 require('dotenv').config()
 
@@ -25,6 +26,16 @@ const dummyBlog = {
     description: 'testing',
     tags: ['tests'],
     body: 'Null'
+}
+
+const dummyBlog2 = {
+    title: 'New blog',
+    description: 'testing',
+    tags: ['tests'],
+    body: 'Null',
+    author_id: userID,
+    author: 'Tobe John',
+    reading_time: '1 minutes'
 }
 
 const dummyUser = {
@@ -70,6 +81,31 @@ describe('Blogs', () => {
                 expect(response.statusCode).not.toBe(200)
                 expect(response.statusCode).not.toBe(404)
                 expect(response.body).toEqual({ msg: 'Authentication Invalid' })
+            })
+        })
+    })
+
+    describe('Get All Blogs(author) Route', () => {
+        describe('Given the user is authenticated and valid query params', () => {
+            test('Should return 200-statusCode and an array of blogs', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .get('/api/v1/blog/author/all')
+                    .set('Authorization', `Bearer ${accessToken}`)
+                    .query({
+                        state: 'draft',
+                        page: 1,
+                        limit: 5
+                    })
+
+                expect(response.statusCode).toBe(200)
+                expect(response.statusCode).not.toBe(400)
+                expect(response.statusCode).not.toBe(404)
+                expect(response.body).toHaveProperty('blogs', expect.any(Array))
+                expect(response.body.status).toBe('success')
             })
         })
     })
