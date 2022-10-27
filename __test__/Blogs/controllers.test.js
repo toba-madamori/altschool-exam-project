@@ -213,4 +213,30 @@ describe('Blogs', () => {
             })
         })
     })
+
+    describe('Get All Blogs(public) Route', () => {
+        describe('Given valid query params', () => {
+            test('Should return 200-statusCode and an array of blogs', async () => {
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .get('/api/v1/blog/public/all')
+                    .query({
+                        author: 'draft',
+                        title: 'New blog',
+                        tags: 'Testing',
+                        sort: '-createdAt, read_count',
+                        page: 1,
+                        limit: 5
+                    })
+
+                expect(response.statusCode).toBe(200)
+                expect(response.statusCode).not.toBe(400)
+                expect(response.statusCode).not.toBe(404)
+                expect(response.body).toHaveProperty('blogs', expect.any(Array))
+                expect(response.body.status).toBe('success')
+            })
+        })
+    })
 })
