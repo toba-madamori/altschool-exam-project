@@ -170,4 +170,21 @@ describe('Blogs', () => {
             })
         })
     })
+
+    describe('Delete Blog Route', () => {
+        describe('Given the user/author is validated', () => {
+            test('Should return 200-statusCode', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .delete(`/api/v1/blog/delete/${blogID}`)
+                    .set('Authorization', `Bearer ${accessToken}`)
+
+                expect(response.statusCode).toBe(200)
+                expect(response.body.status).toBe('success')
+            })
+        })
+    })
 })
