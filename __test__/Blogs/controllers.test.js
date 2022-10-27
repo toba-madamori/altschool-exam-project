@@ -20,6 +20,7 @@ afterEach(async () => {
 })
 
 const userID = '62f3c6de0b6fab3631581379'
+const blogID = '62f3c6de0b6fab3631581373'
 
 const dummyBlog = {
     title: 'New blog',
@@ -29,6 +30,7 @@ const dummyBlog = {
 }
 
 const dummyBlog2 = {
+    _id: blogID,
     title: 'New blog',
     description: 'testing',
     tags: ['tests'],
@@ -106,6 +108,34 @@ describe('Blogs', () => {
                 expect(response.statusCode).not.toBe(404)
                 expect(response.body).toHaveProperty('blogs', expect.any(Array))
                 expect(response.body.status).toBe('success')
+            })
+        })
+    })
+
+    describe('Publish Blog Route', () => {
+        describe('Given the user/author is validated', () => {
+            test('Should return 200-statusCode and updated blog if blog exists', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .patch(`/api/v1/blog/publish/${blogID}`)
+                    .set('Authorization', `Bearer ${accessToken}`)
+
+                expect(response.statusCode).toBe(200)
+                expect(response.body.status).toBe('success')
+            })
+            test('Should return 404-statusCode and error message if blog does not exist', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+
+                const response = await request(app)
+                    .patch('/api/v1/blog/publish/62f3c6de0b6fab363158137c')
+                    .set('Authorization', `Bearer ${accessToken}`)
+
+                expect(response.statusCode).toBe(404)
+                expect(response.body).toEqual({ msg: 'sorry this blog does not exist' })
             })
         })
     })
