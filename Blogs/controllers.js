@@ -74,10 +74,20 @@ const deleteBlog = async (req, res) => {
     res.status(StatusCodes.OK).json({ status: 'success' })
 }
 
+const getBlog = async (req, res) => {
+    const { id: _id } = req.params
+
+    const blog = await Blog.findByIdAndUpdate({ _id }, { $inc: { read_count: 1 } }, { new: true, runValidators: true })
+    if (!blog) throw new NotFoundError('sorry this blog does not exist')
+
+    res.status(StatusCodes.OK).json({ status: 'success', blog: { title: blog.title, description: blog.description, author: blog.author, state: blog.state, read_count: blog.read_count, reading_time: blog.reading_time, tags: blog.tags, body: blog.body } })
+}
+
 module.exports = {
     createBlog,
     getAllAuthor,
     publishBlog,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    getBlog
 }
