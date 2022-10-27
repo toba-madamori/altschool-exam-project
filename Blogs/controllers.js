@@ -83,11 +83,40 @@ const getBlog = async (req, res) => {
     res.status(StatusCodes.OK).json({ status: 'success', blog: { title: blog.title, description: blog.description, author: blog.author, state: blog.state, read_count: blog.read_count, reading_time: blog.reading_time, tags: blog.tags, body: blog.body } })
 }
 
+const getAllPublic = async (req, res) => {
+    let { author, title, tags, sort, page, limit } = req.query
+
+    const queryObject = {}
+    if (author) queryObject.author = { $regex: author, $options: 'i' }
+    if (title) queryObject.title = { $regex: title, $options: 'i' }
+    if (tags) queryObject.tags = { $in: tags }
+
+    let result = Blog.find(queryObject)
+
+    if (sort) {
+        const sortingParams = sort.split(',').join(' ')
+        result = result.sort(sortingParams)
+    }
+
+    result = result.select('-__v -updatedAt')
+
+    page = Number(page) || 1
+    limit = Number(limit) || 20
+    const skip = (page - 1) * limit
+
+    result = result.skip(skip).limit(limit)
+
+    const blogs = await result
+
+    res.status(StatusCodes.OK).json({ status: 'success', blogs, nbhits: blogs.length })
+}
+
 module.exports = {
     createBlog,
     getAllAuthor,
     publishBlog,
     updateBlog,
     deleteBlog,
-    getBlog
+    getBlog,
+    getAllPublic
 }

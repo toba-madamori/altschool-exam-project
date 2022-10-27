@@ -30,9 +30,19 @@ const updateBlogSchema = Joi.object().keys({
 
 })
 
+const getAllPublicSchema = Joi.object().keys({
+    author: string,
+    title: string,
+    tags: string,
+    sort: string,
+    page: Joi.number().integer(),
+    limit: Joi.number().integer()
+})
+
 module.exports = {
     createBlogSchema,
     getAllAuthorSchema,
     idSchema,
-    updateBlogSchema
+    updateBlogSchema,
+    getAllPublicSchema
 }
