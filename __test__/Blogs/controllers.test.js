@@ -187,4 +187,30 @@ describe('Blogs', () => {
             })
         })
     })
+
+    describe('Get A Blog Route', () => {
+        describe('Given a valid blog-id', () => {
+            test('Should return 200-statusCode and body if blog exists', async () => {
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .get(`/api/v1/blog/${blogID}`)
+
+                expect(response.statusCode).toBe(200)
+                expect(response.statusCode).not.toBe(400)
+                expect(response.statusCode).not.toBe(404)
+                expect(response.body).toHaveProperty('blog', expect.any(Object))
+                expect(response.body.status).toBe('success')
+            })
+            test('Should return 404-statusCode and message if blog does not exist', async () => {
+                const response = await request(app)
+                    .get('/api/v1/blog/62f3c6de0b6fab363158137a')
+
+                expect(response.statusCode).toBe(404)
+                expect(response.statusCode).not.toBe(200)
+                expect(response.statusCode).not.toBe(400)
+                expect(response.body).toEqual({ msg: 'sorry this blog does not exist' })
+            })
+        })
+    })
 })
