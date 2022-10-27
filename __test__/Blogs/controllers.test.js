@@ -139,4 +139,35 @@ describe('Blogs', () => {
             })
         })
     })
+
+    describe('Update Blog Route', () => {
+        describe('Given the user/author is validated', () => {
+            test('Should return 200-statusCode and updated body if blog exists', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .patch(`/api/v1/blog/update/${blogID}`)
+                    .set('Authorization', `Bearer ${accessToken}`)
+                    .send({ title: 'New blog(updated)' })
+
+                expect(response.statusCode).toBe(200)
+                expect(response.body.status).toBe('success')
+            })
+            test('Should return 404-statusCode and error message if blog does not exist', async () => {
+                const accessToken = await signAccessToken(userID)
+                await new User({ ...dummyUser }).save()
+                await new Blog({ ...dummyBlog2 }).save()
+
+                const response = await request(app)
+                    .patch('/api/v1/blog/update/62f3c6de0b6fab363158137c')
+                    .set('Authorization', `Bearer ${accessToken}`)
+                    .send({ title: 'New blog(updated)' })
+
+                expect(response.statusCode).toBe(404)
+                expect(response.body).toEqual({ msg: 'sorry this blog does not exist' })
+            })
+        })
+    })
 })
