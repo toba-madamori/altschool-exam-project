@@ -67,9 +67,17 @@ const updateBlog = async (req, res) => {
     res.status(StatusCodes.OK).json({ status: 'success', blog })
 }
 
+const deleteBlog = async (req, res) => {
+    const { id: _id } = req.params
+
+    await Blog.findByIdAndDelete(_id)
+    res.status(StatusCodes.OK).json({ status: 'success' })
+}
+
 module.exports = {
     createBlog,
     getAllAuthor,
     publishBlog,
-    updateBlog
+    updateBlog,
+    deleteBlog
 }
