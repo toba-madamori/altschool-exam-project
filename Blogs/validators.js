@@ -11,6 +11,13 @@ const createBlogSchema = Joi.object().keys({
 
 })
 
+const getAllAuthorSchema = Joi.object().keys({
+    state: Joi.string().valid('draft', 'published'),
+    page: Joi.number().integer(),
+    limit: Joi.number().integer()
+})
+
 module.exports = {
-    createBlogSchema
+    createBlogSchema,
+    getAllAuthorSchema
 }

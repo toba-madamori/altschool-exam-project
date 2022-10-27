@@ -16,6 +16,26 @@ const createBlog = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ status: 'success', blog: { title: blog.title, author: blog.author } })
 }
 
+const getAllAuthor = async (req, res) => {
+    let { state, page, limit } = req.query
+    const { userID: author_id } = req.user
+
+    const queryObject = {}
+    if (state) {
+        queryObject.state = state
+    }
+    queryObject.author_id = author_id
+
+    page = Number(page) || 1
+    limit = Number(limit) || 20
+    const skip = (page - 1) * limit
+
+    const blogs = await Blog.find(queryObject).select('-updatedAt -__v').skip(skip).limit(limit)
+
+    res.status(StatusCodes.OK).json({ status: 'success', blogs, nbhits: blogs.length })
+}
+
 module.exports = {
-    createBlog
+    createBlog,
+    getAllAuthor
 }
