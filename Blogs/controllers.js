@@ -3,6 +3,7 @@ const { StatusCodes } = require('http-status-codes')
 const Blog = require('./model')
 const User = require('../Auth/model')
 const { readingTime } = require('../Utils/reading-time')
+const { NotFoundError } = require('../Errors')
 
 const createBlog = async (req, res) => {
     const { body } = req.body
@@ -35,7 +36,19 @@ const getAllAuthor = async (req, res) => {
     res.status(StatusCodes.OK).json({ status: 'success', blogs, nbhits: blogs.length })
 }
 
+const publishBlog = async (req, res) => {
+    const { id: _id } = req.params
+
+    let blog = await Blog.findById(_id)
+    if (!blog) throw new NotFoundError('sorry this blog does not exist')
+
+    blog = await Blog.findByIdAndUpdate({ _id }, { state: 'published' }, { new: true, runValidators: true })
+
+    res.status(StatusCodes.OK).json({ status: 'success', blog: { title: blog.title, author: blog.author, state: blog.state } })
+}
+
 module.exports = {
     createBlog,
-    getAllAuthor
+    getAllAuthor,
+    publishBlog
 }

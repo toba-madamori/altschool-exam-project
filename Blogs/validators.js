@@ -17,7 +17,13 @@ const getAllAuthorSchema = Joi.object().keys({
     limit: Joi.number().integer()
 })
 
+const idSchema = Joi.object().keys({
+    id: Joi.string().hex().length(24).pattern(/^[0-9a-fA-F]{24}$/).required()
+
+})
+
 module.exports = {
     createBlogSchema,
-    getAllAuthorSchema
+    getAllAuthorSchema,
+    idSchema
 }
