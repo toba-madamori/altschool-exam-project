@@ -47,8 +47,29 @@ const publishBlog = async (req, res) => {
     res.status(StatusCodes.OK).json({ status: 'success', blog: { title: blog.title, author: blog.author, state: blog.state } })
 }
 
+const updateBlog = async (req, res) => {
+    const { id: _id } = req.params
+    const { body } = req.body
+
+    let reading_time
+
+    let blog = await Blog.findById(_id)
+    if (!blog) throw new NotFoundError('sorry this blog does not exist')
+
+    if (body) {
+        reading_time = await readingTime(body)
+    }
+    const update = { ...req.body }
+    update.reading_time = reading_time
+
+    blog = await Blog.findByIdAndUpdate({ _id }, update, { new: true, runValidators: true }).select('-__v -updatedAt')
+
+    res.status(StatusCodes.OK).json({ status: 'success', blog })
+}
+
 module.exports = {
     createBlog,
     getAllAuthor,
-    publishBlog
+    publishBlog,
+    updateBlog
 }

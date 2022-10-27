@@ -22,8 +22,17 @@ const idSchema = Joi.object().keys({
 
 })
 
+const updateBlogSchema = Joi.object().keys({
+    title: string,
+    description: string,
+    tags: Joi.array().items(Joi.string().trim(true)),
+    body: string
+
+})
+
 module.exports = {
     createBlogSchema,
     getAllAuthorSchema,
-    idSchema
+    idSchema,
+    updateBlogSchema
 }
