@@ -48,7 +48,7 @@ npm test
 
 #### Usage
 
-[Documentation]()
+[Documentation](https://documenter.getpostman.com/view/14326360/2s8YK6KkxF)
 
 **1**. **Authentication**
 

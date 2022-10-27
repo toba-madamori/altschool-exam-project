@@ -31,7 +31,7 @@ app.use(xss())
 
 // test-route
 app.get('/', (req, res) => {
-    res.send('<h4>exam api is up and running at </h4><a href="">Documentation</a>')
+    res.send('<h4>exam api is up and running at </h4><a href="https://documenter.getpostman.com/view/14326360/2s8YK6KkxF">Documentation</a>')
 })
 
 // routes

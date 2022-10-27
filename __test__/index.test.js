@@ -7,6 +7,6 @@ describe('App Instantiation', () => {
         const response = await request(app)
             .get('/')
 
-        expect(response.text).toBe('<h4>exam api is up and running at </h4><a href="">Documentation</a>')
+        expect(response.text).toBe('<h4>exam api is up and running at </h4><a href="https://documenter.getpostman.com/view/14326360/2s8YK6KkxF">Documentation</a>')
     })
 })
