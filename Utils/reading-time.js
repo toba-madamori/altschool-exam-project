@@ -8,7 +8,7 @@ const readingTime = (body) => {
             let count = Number(wordCount / 200)
             if (count < 1) count = 1
 
-            const minutes = Math.round(count).toString() + ' ' + 'minutes'
+            const minutes = Math.round(count)
             resolve(minutes)
         } catch (error) {
             logger.error(error.message)
