@@ -28,7 +28,7 @@ const BlogSchema = new mongoose.Schema({
         default: 0
     },
     reading_time: {
-        type: String,
+        type: Number,
         required: [true, 'please provide the average reading time of this blog']
     },
     tags: [{
